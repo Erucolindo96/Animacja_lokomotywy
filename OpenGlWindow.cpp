@@ -36,6 +36,21 @@ void OpenGlWindow::setUpOpenGl()
 	glViewport(0, 0, WIDTH, HEIGHT);
 }
 
+void OpenGlWindow::swapBuffers()
+{
+	glfwSwapBuffers(window_);
+}
+
+void OpenGlWindow::pollEvents() const
+{
+	glfwPollEvents();
+}
+
+bool OpenGlWindow::shouldClose() const
+{
+	return static_cast<bool>(glfwWindowShouldClose(window_));
+}
+
 
 
 

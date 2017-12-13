@@ -17,7 +17,9 @@ public:
 	void createWindow();
 	void setUpOpenGl();
 	void swapBuffers();
-	void pollEvents();
+	void pollEvents()const;
+	bool shouldClose()const;
+
 
 
 	~OpenGlWindow();

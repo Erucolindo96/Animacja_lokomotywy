@@ -5,8 +5,10 @@
 #include <GLFW\glfw3.h>
 #include <SOIL.h>
 
+#include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <memory>
 
 struct Vertex
 {
@@ -29,12 +31,22 @@ public:
 	void setRotation(glm::vec3 rotation);
 	glm::vec3 getRotation()const;
 
+	std::vector<GLuint> getIndices()const;
+	std::vector<Vertex> getVertices()const;
+
+	GLuint getShaderId()const;
+	void setShaderId(GLuint shader_id);
+	/**
+		Metoda rysuje na scenie, za pomoc¹ podanego shadera, wierzcho³ki które zawiera klasa jako trójk¹ty
+	*/
 	virtual void draw()const;
+	virtual std::unique_ptr<Actor> clone()const = 0;
 	virtual ~Actor();
 
 
 protected:
 	Actor();
+	Actor(const Actor &other);
 	std::vector<Vertex> verts_;
 	std::vector<GLuint> indices_;
 	GLuint shader_id_;
@@ -42,18 +54,22 @@ protected:
 	glm::vec3 position_;
 	glm::vec3 rotation_;
 
-	//gettery i settery
-	void setShaderId(GLuint shader_id);
-	GLuint getShaderId()const;
-
 	void setVertices(const std::vector<Vertex> &verts);
-	std::vector<Vertex> getVertices()const;
-
 	void setIndices(const std::vector<GLuint> &indices);
-	std::vector<GLuint> getIndices()const;
-
+	/**
+		Metoda twrozy bufory OpenGla
+	*/
 	void initBuffers();
+	/**
+		Metoda tworzy bufory OpenGla 
+	*/
+	
 	void bindVertexAndIndices();
+	/**
+		Metoda dolacza  do buforow OpenGla wartosci pol klasy
+		Nalezy ja zawolac w konstruktorach klas pochodnych gdy zostana juz dodane wartosci pol klasy
+	*/
+	virtual void countAndSetVertsAndIndices();
 
 
 };

@@ -7,6 +7,13 @@ Actor::Actor()
 	initBuffers();
 }
 
+Actor::Actor(const Actor & other): verts_(other.verts_), indices_(other.indices_), shader_id_(other.shader_id_),
+position_(other.position_), rotation_(other.rotation_)
+{
+	initBuffers();
+	bindVertexAndIndices();//zakladamy ze kopiowane pola sa znane i dlatego to wolamy
+}
+
 void Actor::setPosition(glm::vec3 position)
 {
 	position_ = position;
@@ -104,6 +111,12 @@ void Actor::bindVertexAndIndices()
 	glBindVertexArray(0);
 
 }
+
+void Actor::countAndSetVertsAndIndices()
+{
+}
+
+
 
 Vertex::Vertex()
 {

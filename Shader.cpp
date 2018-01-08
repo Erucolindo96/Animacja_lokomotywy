@@ -8,6 +8,21 @@ Shader::Shader()
 }
 
 
+GLuint Shader::getProjectionId() const
+{
+	return glGetUniformLocation(shader_id_, "projection");
+}
+
+GLuint Shader::getViewId() const
+{
+	return glGetUniformLocation(shader_id_, "view");
+}
+
+GLuint Shader::getModelId() const
+{
+	return glGetUniformLocation(shader_id_, "model");
+}
+
 Shader::~Shader()
 {
 }
@@ -26,14 +41,14 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 
 	GLint success=1;
 	glGetProgramiv(shader_id_, GL_LINK_STATUS, &success);
-	if (!success)
+	if (success == GL_FALSE)
 	{
 		char infoLog[4096];
 		glGetShaderInfoLog(shader_id_, sizeof(infoLog), NULL, infoLog);
 		std::string msg = std::string("Shader::Linker error: \n") + infoLog;
 		throw ShaderCompilationError(msg);
 	}
-	//glDeleteShader(vertex_id);
+	glDeleteShader(vertex_id);
 	glDeleteShader(fragment_id);
 }
 

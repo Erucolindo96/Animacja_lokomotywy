@@ -14,17 +14,22 @@ class OpenGlWindow
 
 public:
 	OpenGlWindow();
-	void createWindow();
-	void setUpOpenGl();
+	
 	void swapBuffers();
+	void clearBuffers();
 	void pollEvents()const;
 	bool shouldClose()const;
+	GLint getHeigth()const;
+	GLint getWidth()const;
 
 
 
-	~OpenGlWindow();
+
+	virtual ~OpenGlWindow();
 
 protected:
+	void createWindow();
+	void setUpOpenGl();
 	void destroyWindow();
 	void destroyOpenGl();
 	static void setKeyCallback(GLFWwindow* window_to_handle, void (*callback) (GLFWwindow* window, int key, int scancode, int action, int mode));

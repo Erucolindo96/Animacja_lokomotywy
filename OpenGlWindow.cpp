@@ -4,6 +4,8 @@
 
 OpenGlWindow::OpenGlWindow()
 {
+	createWindow();
+	setUpOpenGl();
 }
 
 void OpenGlWindow::createWindow()
@@ -34,11 +36,18 @@ void OpenGlWindow::setUpOpenGl()
 		throw GlInitializationFail("GLEW: GLEW Initialization failed\n");
 
 	glViewport(0, 0, WIDTH, HEIGHT);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void OpenGlWindow::swapBuffers()
 {
 	glfwSwapBuffers(window_);
+
+}
+
+void OpenGlWindow::clearBuffers()
+{
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 void OpenGlWindow::pollEvents() const
@@ -49,6 +58,16 @@ void OpenGlWindow::pollEvents() const
 bool OpenGlWindow::shouldClose() const
 {
 	return static_cast<bool>(glfwWindowShouldClose(window_));
+}
+
+GLint OpenGlWindow::getHeigth() const
+{
+	return HEIGHT;
+}
+
+GLint OpenGlWindow::getWidth() const
+{
+	return WIDTH;
 }
 
 

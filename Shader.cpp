@@ -44,7 +44,7 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 	if (success == GL_FALSE)
 	{
 		char infoLog[4096];
-		glGetShaderInfoLog(shader_id_, sizeof(infoLog), NULL, infoLog);
+		glGetProgramInfoLog(shader_id_, sizeof(infoLog), NULL, infoLog);
 		std::string msg = std::string("Shader::Linker error: \n") + infoLog;
 		throw ShaderCompilationError(msg);
 	}

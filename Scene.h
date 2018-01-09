@@ -4,6 +4,7 @@
 #include "Actor.h"
 #include "Camera.h"
 #include "Box.h"
+#include "Rectangle.h"
 class Scene
 {
 protected:
@@ -22,7 +23,7 @@ public:
 	void setActor(const Actor &act);
 	std::unique_ptr<Actor>& getActorReference(int number);
 	void setShaderId(GLuint id);
-	static Scene& getDefaultScene();
+	static Scene getDefaultScene();
 
 	void renderActors();
 

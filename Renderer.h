@@ -16,7 +16,7 @@ protected:
 	Camera camera_;
 	
 	Shader shader_;
-	const GLfloat FAR = 100 , NEAR = 0.1;
+	const GLfloat FAR = 10 , NEAR = 0.01;
 	GLfloat fov_;
 	
 

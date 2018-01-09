@@ -4,7 +4,7 @@
 
 
 
-Renderer::Renderer(OpenGlWindow & window, const Camera &cam):window_(window), shader_("..\\Animacja_lokomotywy\\shaders_code\\main.vert", DEFAULT_FRAG_SHADER), camera_(cam),fov_(45.0)
+Renderer::Renderer(OpenGlWindow & window, const Camera &cam):window_(window), shader_(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER), camera_(cam),fov_(70.0)
 {
 	//glEnable(GL_DEPTH_TEST);
 }

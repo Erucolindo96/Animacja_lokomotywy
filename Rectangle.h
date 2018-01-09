@@ -6,7 +6,10 @@ class Rectangle :
 public:
 
 	Rectangle(std::vector<Vertex> verts);
+	Rectangle(const Rectangle &other);
 	virtual ~Rectangle();
+	virtual std::unique_ptr<Actor> clone()const;
+
 protected:
 	Rectangle();
 

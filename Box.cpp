@@ -42,10 +42,11 @@ void Box::countAndSetVertsAndIndices(const std::vector<Vertex> &base, const GLfl
 	{//przesuwamy podstawe o wektor normalny o dlugosci height
 		up_base[i] = base[i].position_ + normal;
 	}
-	Vertex v(base[0]); //kopiujemy inne parametry np teksture
+	//Vertex v(base[0]); 
 	
 	for (int i = 0; i < 4; ++i)
 	{
+		Vertex v(base[i]);//kopiujemy inne parametry np teksture
 		v.position_ = up_base[i];
 		verts_.push_back(v);
 	}

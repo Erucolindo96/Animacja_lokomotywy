@@ -16,15 +16,22 @@ Actor::Actor(const Actor & other): verts_(other.verts_), indices_(other.indices_
 	priority_[ROTATION] = other.priority_[ROTATION];
 	initBuffers();
 	bindVertexAndIndices();//zakladamy ze kopiowane pola sa znane i dlatego to wolamy
+	//countTransformationMatrix();
 }
 
 
-void Actor::setTranslation(glm::vec3 translation, Priority p)
+void Actor::setTranslation(glm::vec3 translation)
 {
 	translation_ = translation;
-	if (findIndexOfPriority(p) != -1)
+	//countTransformationMatrix();
+}
+
+void Actor::setTranslationPriority(Priority p)
+{
+	if(findIndexOfPriority(p) != -1)
 		throw std::logic_error("Actor::setTranslation - priorytet juz istnieje");
 	priority_[TRANSLATION] = p;
+	//countTransformationMatrix();
 }
 
 glm::vec3 Actor::getTranslation() const
@@ -32,13 +39,19 @@ glm::vec3 Actor::getTranslation() const
 	return translation_;
 }
 
-void Actor::setRotation(glm::vec3 rotation_vec, GLfloat angle, Priority p)
+void Actor::setRotation(glm::vec3 rotation_vec, GLfloat angle)
 {
 	rotation_vec_ = rotation_vec;
 	rot_angle_ = angle;
+	//countTransformationMatrix();
+}
+
+void Actor::setRotationPriority(Priority p)
+{
 	if (findIndexOfPriority(p) != -1)
 		throw std::logic_error("Actor::setTranslation - priorytet juz istnieje");
 	priority_[ROTATION] = p;
+	//countTransformationMatrix();
 }
 
 glm::vec3 Actor::getRotationVect() const
@@ -63,9 +76,10 @@ void Actor::draw() const
 {
 	//chyba juz gotowe ---  throw std::runtime_error("TODO - zrobic obliczanie macierzy przeksztalcenia - uzyj fcji countTransformationMatrix");
 	//dolacza swoja macierz przeksztalcenia - aby przeksztalcic swoje wierzcholki
+	glm::mat4 model = countTransformationMatrix();
 	glUseProgram(shader_id_);
 	GLuint model_Uniform = glGetUniformLocation(shader_id_, "model");
-	glUniformMatrix4fv(model_Uniform, 1, GL_FALSE, glm::value_ptr(model_matrix));
+	glUniformMatrix4fv(model_Uniform, 1, GL_FALSE, glm::value_ptr(model));
 	
 	glBindVertexArray(VAO_);
 	//mozna tu dopisac uzycie shadera
@@ -134,16 +148,16 @@ void Actor::bindVertexAndIndices()
 	//miejsce w pamieci wspolrzednych
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
-	//normalnych
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal_));
-	//tekstury
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, textCoord_));
 	//koloru
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color_));
-	
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color_));
+	//normalnych
+	//glEnableVertexAttribArray(2);
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal_));
+	//tekstury
+	//glEnableVertexAttribArray(3);
+	//glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, textCoord_));
+
 	glBindVertexArray(0);
 
 }
@@ -152,9 +166,9 @@ void Actor::countAndSetVertsAndIndices()
 {
 }
 
-glm::mat4 Actor::countTransformationMatrix()
+glm::mat4 Actor::countTransformationMatrix() const
 {
-	glm::mat4 transformation;
+	glm::mat4 transformation(1.0);
 	if (priority_[TRANSLATION] == FIRST)
 	{
 		transformation = glm::translate(transformation, translation_);
@@ -169,7 +183,9 @@ glm::mat4 Actor::countTransformationMatrix()
 	{
 		throw std::runtime_error("Wartosc priorytetu inna niz dozwolona");
 	}
-	model_matrix = transformation;
+	//TODO
+	//model_matrix = transformation;
+	//model_matrix = glm::mat4(1.0);
 	return transformation;
 }
 

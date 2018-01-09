@@ -2,7 +2,7 @@
 
 
 
-Camera::Camera():position_(-1.0, 0.0, 0.0), target_(1.0, 0.0, 0.0), up_(0.0, 1.0, 0.0)
+Camera::Camera():position_(-1.0, 0.3, 0.0), target_(1.0, 0.0, 0.0), up_(0.0, 1.0, 0.0)
 {
 
 }
@@ -96,7 +96,9 @@ void Camera::setDefaultPosition()
 }
 glm::mat4 Camera::getViewMatrix() const
 {
-	return glm::lookAt(position_, target_, up_);
+	//return glm::mat4(1.0);
+	//TODO
+	return glm::lookAt(position_, target_, up_); 
 }
 void Camera::moveForward()
 {

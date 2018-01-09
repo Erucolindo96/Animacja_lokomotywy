@@ -51,21 +51,25 @@ void Scene::setShaderId(GLuint id)
 	setShaderIdToActors();
 }
 
-Scene & Scene::getDefaultScene()
+Scene Scene::getDefaultScene()
 {
 	//teraz defaultowa scena skladac sie bedzie z prostopadlosciany w srodku ekranu
 	Scene ret_scene;
-	Vertex v1(glm::vec3({0.25, 0, 0.25}), glm::vec3({100,100,100}), glm::vec3({0,0,0}), glm::vec2({0,0})), v2(v1), v3(v1), v4(v1);
-	v2.position_ = {0.25, 0, -0.25};
-	v3.position_ = {-0.25, 0, -0.25};
-	v4.position_ = { -0.25, 0, 0.25 };
+	Vertex v1(glm::vec3({0.25, 0, 0.25 }), glm::vec3({0.3,0.2,0.1}), glm::vec3({0,0,0}), glm::vec2({0,0})), v2(v1), v3(v1), v4(v1);
+	v2.position_ = {0.25, 0 , -0.25 };
+	v3.position_ = {-0.25, 0 , -0.25 };
+	v3.color_ = { 0.7, 0.8, 0.9 };
+	v4.position_ = { -0.25,  0, 0.25 };
 	std::vector<Vertex> verts;
 	verts.push_back(v1);
 	verts.push_back(v2);
 	verts.push_back(v3);
 	verts.push_back(v4); 
+	//Rectangle r(verts);
 	Box b(verts, 0.25);
-	b.setTranslation({ 1.0, 0.0, 0.0 }, FIRST);
+	//b.setTranslation({ 3.0, 2.0, 3.0 } );
+	b.setRotation({0.0, 1.0, 0.0}, glm::radians(45.0));
+
 	ret_scene.setActor(b);
 	return ret_scene;
 	

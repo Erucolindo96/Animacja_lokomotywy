@@ -15,7 +15,8 @@
 enum Priority
 {
 	FIRST,
-	SECOND
+	SECOND,
+	NONE
 };
 
 struct Vertex
@@ -40,9 +41,12 @@ public:
 	Metody s³u¿¹ce do translacji i obrotu aktora.
 	Gdy zostanie wywo³ana metoda draw() tworz¹ macierz przeksztalcenia, zaleznie od danego priorytetu.
 	*/
-	void setTranslation(glm::vec3 translation, Priority p );
+	void setTranslation(glm::vec3 translation);
+	void setTranslationPriority(Priority p);
 	glm::vec3 getTranslation()const;
-	void setRotation(glm::vec3 rotation_vec, GLfloat angle, Priority p);
+
+	void setRotation(glm::vec3 rotation_vec, GLfloat angle);
+	void setRotationPriority(Priority p);
 	glm::vec3 getRotationVect()const;
 	GLfloat getRotationAngle()const;
 	Priority getPriotiry(char number_of_tranformation);
@@ -72,7 +76,7 @@ protected:
 	
 	glm::vec3 translation_;
 	glm::vec3 rotation_vec_;
-	glm::mat4 model_matrix;
+	//glm::mat4 model_matrix;
 
 	GLfloat rot_angle_;
 	Priority priority_[TRANSFORMATION_CNT];//2 - ilosc przeksztalcen
@@ -102,7 +106,7 @@ protected:
 	/**
 	Metoda oblicza macierz przekstalcenia
 	*/
-	glm::mat4 countTransformationMatrix();
+	glm::mat4 countTransformationMatrix()const;
 
 	char findIndexOfPriority(Priority p);
 

@@ -1,13 +1,13 @@
 #version 330 core
 
-in vec3 inColor;
-out vec4 color;
+in vec3 oColor;
+out vec4 FragColor;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+//uniform mat4 model;
+//uniform mat4 view;
+//uniform mat4 projection;
   
-void main(void)
+void main()
 {
-    color = vec4(inColor, 1.0f);
+   FragColor = vec4(oColor, 1.0f);
 }

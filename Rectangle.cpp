@@ -13,6 +13,14 @@ Rectangle::Rectangle(std::vector<Vertex> verts) : Actor()
 	bindVertexAndIndices();
 }
 
+Rectangle::Rectangle(const Rectangle &other): Actor(other)
+{}
+
 Rectangle::~Rectangle()
 {
+}
+
+std::unique_ptr<Actor> Rectangle::clone() const
+{
+	return std::unique_ptr<Actor>(new Rectangle(*this));
 }

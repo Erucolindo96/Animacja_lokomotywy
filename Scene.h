@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Box.h"
 #include "Rectangle.h"
+#include "Cylinder.h"
 class Scene
 {
 protected:

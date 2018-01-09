@@ -208,3 +208,18 @@ Vertex::Vertex()
 
 Vertex::Vertex(const Vertex & other): position_(other.position_), normal_(other.normal_), textCoord_(other.textCoord_), color_(other.color_)
 {}
+Vertex::Vertex(Vertex &&other) : position_(std::move(other.position_)), color_(std::move(other.color_)), normal_(std::move(other.normal_)), textCoord_(std::move(other.textCoord_))
+{}
+
+Vertex & Vertex::operator=(const Vertex & other)
+{
+	if (this == &other)
+		return *this;
+	position_ = other.position_;
+	color_ = other.color_;
+	normal_ = other.normal_;
+	textCoord_ = other.textCoord_;
+	return *this;
+}
+
+	

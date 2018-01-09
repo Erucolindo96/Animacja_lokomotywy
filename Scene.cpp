@@ -67,10 +67,12 @@ Scene Scene::getDefaultScene()
 	verts.push_back(v4); 
 	//Rectangle r(verts);
 	Box b(verts, 0.25);
-	//b.setTranslation({ 3.0, 2.0, 3.0 } );
-	b.setRotation({0.0, 1.0, 0.0}, glm::radians(45.0));
-
+	b.setTranslation({ -0.25, 0.2, -0.25 } );
+	//b.setRotation({0.0, 1.0, 0.0}, glm::radians(45.0));
+	Cylinder c(verts, 0.2);
+	c.setTranslation({ -0.3, -0.2, 0.0 });
 	ret_scene.setActor(b);
+	ret_scene.setActor(c);
 	return ret_scene;
 	
 }

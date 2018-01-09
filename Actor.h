@@ -6,7 +6,7 @@
 #include <SOIL.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include <glm\gtx\normal.hpp>
 #include <iostream>
 #include <vector>
 #include <stdexcept>
@@ -29,7 +29,12 @@ struct Vertex
 
 	Vertex();
 	Vertex(const Vertex &other);
+	Vertex(Vertex &&other);
+	Vertex& operator=(const Vertex &other);
 	Vertex(glm::vec3 position, glm::vec3 color, glm::vec3 normal, glm::vec2 textCoord) : position_(position), color_(color), normal_(normal), textCoord_(textCoord) {}
+	
+
+
 };
 
 class Actor

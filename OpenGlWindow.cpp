@@ -70,8 +70,20 @@ GLint OpenGlWindow::getWidth() const
 	return WIDTH;
 }
 
+bool OpenGlWindow::isKeyPressed(int key)
+{
+	if (glfwGetKey(window_, key) == GLFW_PRESS)
+		return true;
+	return false;
+}
 
 
+
+
+void OpenGlWindow::setKeyCallback(void(*callback)(GLFWwindow *window, int key, int scancode, int action, int mode))
+{
+	OpenGlWindow::setKeyCallback(window_, callback);
+}
 
 OpenGlWindow::~OpenGlWindow()
 {

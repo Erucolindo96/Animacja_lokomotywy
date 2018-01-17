@@ -16,7 +16,8 @@ protected:
 	//GLfloat vAngle_;// j.w.
 	//GLfloat distance_;//odleglosc od celu
 	//const GLfloat MIN_DIS = 0.1, MAX_DIS = 100, MIN_VERTICAL, MAX_VERTICAL;
-	const GLfloat DELTA = 0.03;//, HEIGHT = 3, WIDTH = 4;
+	const GLfloat DELTA = 0.005f;
+
 	//const GLfloat NEAR = 0.1, FAR = 100;
 
 public:

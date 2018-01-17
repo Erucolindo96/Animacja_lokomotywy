@@ -16,7 +16,7 @@ protected:
 	Camera camera_;
 	
 	Shader shader_;
-	const GLfloat FAR = 10 , NEAR = 0.01;
+	const GLfloat FAR = 100.0f , NEAR = 0.01;
 	GLfloat fov_;
 	
 
@@ -27,6 +27,10 @@ public:
 	void setCamera(const Camera &other);
 	Camera getCamera()const;
 
+	void moveCameraForward();
+	void moveCameraBackward();
+	void moveCameraRight();
+	void moveCameraLeft();
 
 	void render(Scene &scene)const;
 	glm::mat4x4 getProjectionMatrix()const;

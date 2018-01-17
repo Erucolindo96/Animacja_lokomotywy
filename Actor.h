@@ -11,6 +11,7 @@
 #include <vector>
 #include <stdexcept>
 #include <memory>
+#include "Texture.h"
 
 enum Priority
 {
@@ -22,7 +23,6 @@ enum Priority
 struct Vertex
 {
 	glm::vec3 position_;//nie wiem czy nie powinny byc we wsporzednych znormalizowanych
-	glm::vec3 color_;
 	glm::vec3 normal_;//jak wyzej
 	glm::vec2 textCoord_;
 
@@ -31,7 +31,7 @@ struct Vertex
 	Vertex(const Vertex &other);
 	Vertex(Vertex &&other);
 	Vertex& operator=(const Vertex &other);
-	Vertex(glm::vec3 position, glm::vec3 color, glm::vec3 normal, glm::vec2 textCoord) : position_(position), color_(color), normal_(normal), textCoord_(textCoord) {}
+	Vertex(glm::vec3 position, glm::vec3 normal, glm::vec2 textCoord) : position_(position), normal_(normal), textCoord_(textCoord) {}
 	
 
 
@@ -46,15 +46,17 @@ public:
 	Metody s³u¿¹ce do translacji i obrotu aktora.
 	Gdy zostanie wywo³ana metoda draw() tworz¹ macierz przeksztalcenia, zaleznie od danego priorytetu.
 	*/
-	void setTranslation(glm::vec3 translation);
-	void setTranslationPriority(Priority p);
+	virtual void setTranslation(glm::vec3 translation);
+	virtual void setTranslationPriority(Priority p);
 	glm::vec3 getTranslation()const;
 
-	void setRotation(glm::vec3 rotation_vec, GLfloat angle);
-	void setRotationPriority(Priority p);
+	virtual void setRotation(glm::vec3 rotation_vec, GLfloat angle);
+	virtual void setRotationPriority(Priority p);
 	glm::vec3 getRotationVect()const;
 	GLfloat getRotationAngle()const;
 	Priority getPriotiry(char number_of_tranformation);
+
+
 
 
 	std::vector<GLuint> getIndices()const;
@@ -66,7 +68,8 @@ public:
 	/**
 		Metoda rysuje na scenie, za pomoc¹ podanego shadera, wierzcho³ki które zawiera klasa jako trójk¹ty
 	*/
-	virtual void draw()const;
+	void setTextureFromFile(std::string file_name);
+	virtual void draw();
 	virtual std::unique_ptr<Actor> clone()const = 0;
 	virtual ~Actor();
 
@@ -81,18 +84,18 @@ protected:
 	
 	glm::vec3 translation_;
 	glm::vec3 rotation_vec_;
-	//glm::mat4 model_matrix;
+	glm::mat4 model_matrix;
 
 	GLfloat rot_angle_;
 	Priority priority_[TRANSFORMATION_CNT];//2 - ilosc przeksztalcen
 	
-
 	GLuint shader_id_, model_id_;
 	GLuint VBO_, VAO_, EBO_;
-
+	std::unique_ptr<Texture> texture_ptr_;
 
 	void setVertices(const std::vector<Vertex> &verts);
 	void setIndices(const std::vector<GLuint> &indices);
+
 	/**
 		Metoda twrozy bufory OpenGla
 	*/
@@ -108,6 +111,7 @@ protected:
 	*/
 	virtual void countAndSetVertsAndIndices();
 
+	virtual void loadAndSetTexture(const std::string &path);
 	/**
 	Metoda oblicza macierz przekstalcenia
 	*/

@@ -19,6 +19,26 @@ Camera Renderer::getCamera() const
 	return Camera(camera_);
 }
 
+void Renderer::moveCameraForward()
+{
+	camera_.moveForward();
+}
+
+void Renderer::moveCameraBackward()
+{
+	camera_.moveBackward();
+}
+
+void Renderer::moveCameraRight()
+{
+	camera_.moveRight();
+}
+
+void Renderer::moveCameraLeft()
+{
+	camera_.moveLeft();
+}
+
 
 void Renderer::render(Scene & scene)const
 {
@@ -35,6 +55,7 @@ void Renderer::render(Scene & scene)const
 
 glm::mat4x4 Renderer::getProjectionMatrix() const
 {
+
 	return glm::perspective(glm::radians(fov_), (GLfloat)window_.getWidth()/ (GLfloat)window_.getHeigth(), NEAR, FAR);
 }
 

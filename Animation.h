@@ -12,6 +12,7 @@ protected:
 
 public:
 	Animation();
+	void reactOnEvents();
 	void render();
 	void moveForward();
 	void moveBackward();

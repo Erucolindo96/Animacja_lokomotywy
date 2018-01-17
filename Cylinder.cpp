@@ -16,11 +16,12 @@ Cylinder::Cylinder(const std::vector<Vertex>& sign_square_verts, const GLfloat h
 	if (sign_square_verts.size() != SQUARE_VERTS)
 		throw std::logic_error("Cylinder::Zla ilosc wierzcholkow");
 	//wylicz srodkowy wierzcholek podstawy
+	throw std::runtime_error("TODO");
 	glm::vec3 length = sign_square_verts[0].position_ - sign_square_verts[2].position_;
 	glm::vec3 center_vert_pos = sign_square_verts[2].position_ + length / 2.0f;
-	Vertex center_vert(center_vert_pos, sign_square_verts[2].color_, sign_square_verts[2].normal_, sign_square_verts[2].textCoord_);
+	//Vertex center_vert(center_vert_pos, sign_square_verts[2].color_, sign_square_verts[2].normal_, sign_square_verts[2].textCoord_);
 	
-	countAndSetVertsAndIndices(countCylinderBase(sign_square_verts, center_vert ), height);
+	//countAndSetVertsAndIndices(countCylinderBase(sign_square_verts, center_vert ), height);
 	bindVertexAndIndices();
 }
 
@@ -36,6 +37,8 @@ Cylinder::~Cylinder()
 
 void Cylinder::countAndSetVertsAndIndices(std::vector<Vertex>&& base, const GLfloat height)
 {
+	throw std::runtime_error("TODO");
+	/*
 	verts_ = std::move(base);
 	glm::vec3 normal_to_base =glm::normalize( glm::triangleNormal(verts_[0].position_, verts_[4].position_, verts_[8].position_) );
 	normal_to_base *= height;
@@ -67,11 +70,13 @@ void Cylinder::countAndSetVertsAndIndices(std::vector<Vertex>&& base, const GLfl
 				33,26,25,	33,27,26,	33,28,27,	33,29,28,
 				33,30,29,	33,31,30,	33,32,31,	33,17,32
 	};
-
+	*/
 }
 
 std::vector<Vertex> Cylinder::countCylinderBase(const std::vector<Vertex>& sign_square_verts, const Vertex center_vertex)
 {
+	throw std::runtime_error("TODO");
+	/*
 	const int SQUARE_VERTS = 4;
 	std::vector<Vertex> base;
 	//stworz macierz obrotu wzdluz wektora normalnego
@@ -94,4 +99,5 @@ std::vector<Vertex> Cylinder::countCylinderBase(const std::vector<Vertex>& sign_
 	//dodaj na koniec srodkowy wierzcholek
 	base.push_back(center_vertex);
 	return base;
-} 
+	*/
+	} 

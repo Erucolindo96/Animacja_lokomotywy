@@ -18,6 +18,7 @@ int main()
 		{
 			kolejka->clearBuffers();
 			kolejka->pollEvents();
+			kolejka->reactOnEvents();
 			kolejka->render();
 			kolejka->swapBuffers();
 		}

@@ -21,10 +21,11 @@ public:
 	bool shouldClose()const;
 	GLint getHeigth()const;
 	GLint getWidth()const;
+	bool isKeyPressed(int key);
 
 
 
-
+	void setKeyCallback(void(*callback) (GLFWwindow* window, int key, int scancode, int action, int mode));
 	virtual ~OpenGlWindow();
 
 protected:

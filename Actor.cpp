@@ -12,6 +12,10 @@ Actor::Actor(): translation_(0,0,0), rotation_vec_(0,0, 1), rot_angle_(0) //defa
 Actor::Actor(const Actor & other): verts_(other.verts_), indices_(other.indices_), shader_id_(other.shader_id_)
 , translation_(other.translation_), rotation_vec_(other.rotation_vec_), rot_angle_(other.rot_angle_) 
 {
+	if (other.texture_ptr_.get() != nullptr)
+	{
+		texture_ptr_ = other.texture_ptr_->clone();
+	}
 	priority_[TRANSLATION] = other.priority_[TRANSLATION];
 	priority_[ROTATION] = other.priority_[ROTATION];
 	initBuffers();
@@ -71,20 +75,34 @@ Priority Actor::getPriotiry(char number_of_tranformation)
 	return priority_[number_of_tranformation];
 }
 
-
-void Actor::draw() const
+void Actor::loadAndSetTexture(const std::string &path)
 {
-	//chyba juz gotowe ---  throw std::runtime_error("TODO - zrobic obliczanie macierzy przeksztalcenia - uzyj fcji countTransformationMatrix");
+	texture_ptr_ = std::unique_ptr<Texture>(new Texture(path));
+}
+
+
+void Actor::setTextureFromFile(std::string file_name)
+{
+	texture_ptr_ = std::unique_ptr<Texture>(new Texture(file_name));
+}
+
+void Actor::draw()
+{
 	//dolacza swoja macierz przeksztalcenia - aby przeksztalcic swoje wierzcholki
-	glm::mat4 model = countTransformationMatrix();
 	glUseProgram(shader_id_);
-	GLuint model_Uniform = glGetUniformLocation(shader_id_, "model");
-	glUniformMatrix4fv(model_Uniform, 1, GL_FALSE, glm::value_ptr(model));
 	
+	model_matrix = countTransformationMatrix();
+	GLuint model_Uniform = glGetUniformLocation(shader_id_, "model");
+	glUniformMatrix4fv(model_Uniform, 1, GL_FALSE, glm::value_ptr(model_matrix));
+	
+	//throw std::runtime_error("TODO");
 	glBindVertexArray(VAO_);
+	glBindTexture(GL_TEXTURE_2D, texture_ptr_->getIdTexBuffer());
 	//mozna tu dopisac uzycie shadera
+	
 	glDrawElements(GL_TRIANGLES, (GLsizei)indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -148,15 +166,15 @@ void Actor::bindVertexAndIndices()
 	//miejsce w pamieci wspolrzednych
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
-	//koloru
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color_));
 	//normalnych
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal_));
+	//koloru
 	//glEnableVertexAttribArray(2);
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal_));
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color_));
 	//tekstury
-	//glEnableVertexAttribArray(3);
-	//glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, textCoord_));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, textCoord_));
 
 	glBindVertexArray(0);
 
@@ -183,9 +201,7 @@ glm::mat4 Actor::countTransformationMatrix() const
 	{
 		throw std::runtime_error("Wartosc priorytetu inna niz dozwolona");
 	}
-	//TODO
-	//model_matrix = transformation;
-	//model_matrix = glm::mat4(1.0);
+
 	return transformation;
 }
 
@@ -206,9 +222,9 @@ Vertex::Vertex()
 
 }
 
-Vertex::Vertex(const Vertex & other): position_(other.position_), normal_(other.normal_), textCoord_(other.textCoord_), color_(other.color_)
+Vertex::Vertex(const Vertex & other): position_(other.position_), normal_(other.normal_), textCoord_(other.textCoord_)
 {}
-Vertex::Vertex(Vertex &&other) : position_(std::move(other.position_)), color_(std::move(other.color_)), normal_(std::move(other.normal_)), textCoord_(std::move(other.textCoord_))
+Vertex::Vertex(Vertex &&other) : position_(std::move(other.position_)), normal_(std::move(other.normal_)), textCoord_(std::move(other.textCoord_))
 {}
 
 Vertex & Vertex::operator=(const Vertex & other)
@@ -216,7 +232,6 @@ Vertex & Vertex::operator=(const Vertex & other)
 	if (this == &other)
 		return *this;
 	position_ = other.position_;
-	color_ = other.color_;
 	normal_ = other.normal_;
 	textCoord_ = other.textCoord_;
 	return *this;

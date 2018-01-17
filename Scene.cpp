@@ -53,26 +53,30 @@ void Scene::setShaderId(GLuint id)
 
 Scene Scene::getDefaultScene()
 {
+	const std::string TEX_PATH = "..\\Animacja_lokomotywy\\textures\\wood.jpg";
 	//teraz defaultowa scena skladac sie bedzie z prostopadlosciany w srodku ekranu
 	Scene ret_scene;
-	Vertex v1(glm::vec3({0.25, 0, 0.25 }), glm::vec3({0.3,0.2,0.1}), glm::vec3({0,0,0}), glm::vec2({0,0})), v2(v1), v3(v1), v4(v1);
-	v2.position_ = {0.25, 0 , -0.25 };
-	v3.position_ = {-0.25, 0 , -0.25 };
-	v3.color_ = { 0.7, 0.8, 0.9 };
-	v4.position_ = { -0.25,  0, 0.25 };
+	/*
+	Vertex v1(glm::vec3({0.25, 0, 0.25 }),  glm::vec3({0,0,0}), glm::vec2({0,0})), v2(v1), v3(v1), v4(v1);
+	v2.position_ = {0.25, 0, -0.25 };
+	v3.position_ = {-0.25, 0, -0.25 };
+	v3.color_ = { 0.7, 0.6, 0.6 };
+	v4.position_ = { -0.25,  0 , 0.25 };
 	std::vector<Vertex> verts;
 	verts.push_back(v1);
 	verts.push_back(v2);
 	verts.push_back(v3);
 	verts.push_back(v4); 
-	//Rectangle r(verts);
-	Box b(verts, 0.25);
-	b.setTranslation({ -0.25, 0.2, -0.25 } );
-	//b.setRotation({0.0, 1.0, 0.0}, glm::radians(45.0));
-	Cylinder c(verts, 0.2);
-	c.setTranslation({ -0.3, -0.2, 0.0 });
+	*/
+	Box b(2, 2, 2, TEX_PATH );
+	//Box drugi(verts, 0.4);
+	b.setTranslation({ 3, -2, 3 } );
+	b.setRotation({1.0, 0.0, 0.0}, glm::radians(45.0));
+	//Cylinder c(verts, 0.5);
+	//c.setTranslation({ 0.3, 0.2, -0.3 });
 	ret_scene.setActor(b);
-	ret_scene.setActor(c);
+	//ret_scene.setActor(drugi);
+	//ret_scene.setActor(c);
 	return ret_scene;
 	
 }

@@ -20,7 +20,7 @@ Box::Box(const std::vector<Vertex>& base, GLfloat height, const std::string &tex
 	//throw std::runtime_error("TODO");
 }
 
-Box::Box(const GLfloat x_length, const GLfloat y_length, const GLfloat z_length, const std::string & texture_path)
+Box::Box(const GLfloat x_length, const GLfloat y_length, const GLfloat z_length, const std::string & texture_path):Actor()
 {
 	countAndSetVertsAndIndices(x_length, y_length, z_length);
 	setTextureFromFile(texture_path);

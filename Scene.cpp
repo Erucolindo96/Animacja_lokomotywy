@@ -53,7 +53,7 @@ void Scene::setShaderId(GLuint id)
 
 Scene Scene::getDefaultScene()
 {
-	const std::string TEX_PATH = "..\\Animacja_lokomotywy\\textures\\wood.jpg";
+	const std::string TEX_PATH = "..\\Animacja_lokomotywy\\textures\\wood.jpg", TEX_PATH2 = "..\\Animacja_lokomotywy\\textures\\kon_srokaty1.jpg";
 	//teraz defaultowa scena skladac sie bedzie z prostopadlosciany w srodku ekranu
 	Scene ret_scene;
 	/*
@@ -72,11 +72,11 @@ Scene Scene::getDefaultScene()
 	//Box drugi(verts, 0.4);
 	b.setTranslation({ 3, -2, 3 } );
 	b.setRotation({1.0, 0.0, 0.0}, glm::radians(45.0));
-	//Cylinder c(verts, 0.5);
-	//c.setTranslation({ 0.3, 0.2, -0.3 });
+	Cylinder c(1,1, TEX_PATH);
+	c.setTranslation({ 0.3, 0.2, -0.3 });
 	ret_scene.setActor(b);
 	//ret_scene.setActor(drugi);
-	//ret_scene.setActor(c);
+	ret_scene.setActor(c);
 	return ret_scene;
 	
 }

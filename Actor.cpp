@@ -4,8 +4,8 @@
 
 Actor::Actor(): translation_(0,0,0), rotation_vec_(0,0, 1), rot_angle_(0) //defaultowe wartosci ktore nie zmieniaja po³o¿enia wierzcho³ków
 {
-	priority_[TRANSLATION] = FIRST;
-	priority_[ROTATION] = SECOND;//jakiekolwiek priorytety
+	priority_[TRANSLATION] = SECOND;
+	priority_[ROTATION] = FIRST;//jakiekolwiek priorytety
 	initBuffers();
 }
 
@@ -66,6 +66,16 @@ glm::vec3 Actor::getRotationVect() const
 GLfloat Actor::getRotationAngle() const
 {
 	return rot_angle_;
+}
+
+void Actor::incrementRotationVector()
+{
+	rot_angle_ += DELTA;
+}
+
+void Actor::decrementRotationVector()
+{
+	rot_angle_ -= DELTA;
 }
 
 Priority Actor::getPriotiry(char number_of_tranformation)
@@ -160,9 +170,11 @@ void Actor::bindVertexAndIndices()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_);
 	glBindVertexArray(VAO_);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
-
-	glBufferData(GL_ARRAY_BUFFER, verts_.size() * sizeof(Vertex), &verts_[0], GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(GLuint), &indices_[0], GL_STATIC_DRAW);
+	if (verts_.size() > 0 && indices_.size() > 0) // po to aby tam, gdzie nie mamy siatki tylko kompozycje obiektow z siatkami nie wywalilo wyjatku
+	{
+		glBufferData(GL_ARRAY_BUFFER, verts_.size() * sizeof(Vertex), &verts_[0], GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(GLuint), &indices_[0], GL_STATIC_DRAW);
+	}
 	//miejsce w pamieci wspolrzednych
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
@@ -190,12 +202,12 @@ glm::mat4 Actor::countTransformationMatrix() const
 	if (priority_[TRANSLATION] == FIRST)
 	{
 		transformation = glm::translate(transformation, translation_);
-		transformation = glm::rotate(transformation, glm::radians(rot_angle_), rotation_vec_);
+		transformation = glm::rotate(transformation, rot_angle_, rotation_vec_);
 	}
 	else if (priority_[ROTATION] == FIRST)
 	{
-		transformation = glm::rotate(transformation, glm::radians(rot_angle_), rotation_vec_);
 		transformation = glm::translate(transformation, translation_);
+		transformation = glm::rotate(transformation, rot_angle_, rotation_vec_);
 	}
 	else
 	{

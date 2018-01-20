@@ -40,8 +40,9 @@ struct Vertex
 class Actor
 {
 public:
+
 	static const char TRANSLATION = 0, ROTATION = 1;//numery przeksztalcen
-	
+	const float DELTA = 0.01f;
 	/**
 	Metody s³u¿¹ce do translacji i obrotu aktora.
 	Gdy zostanie wywo³ana metoda draw() tworz¹ macierz przeksztalcenia, zaleznie od danego priorytetu.
@@ -54,6 +55,8 @@ public:
 	virtual void setRotationPriority(Priority p);
 	glm::vec3 getRotationVect()const;
 	GLfloat getRotationAngle()const;
+	virtual void incrementRotationVector();
+	virtual void decrementRotationVector();
 	Priority getPriotiry(char number_of_tranformation);
 
 
@@ -63,7 +66,7 @@ public:
 	std::vector<Vertex> getVertices()const;
 
 	GLuint getShaderId()const;
-	void setShaderId(GLuint shader_id);
+	virtual void setShaderId(GLuint shader_id);
 	void setShaderModelMatrix(GLuint model_id); //nie uzywac tego
 	/**
 		Metoda rysuje na scenie, za pomoc¹ podanego shadera, wierzcho³ki które zawiera klasa jako trójk¹ty

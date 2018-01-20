@@ -2,7 +2,7 @@
 
 
 
-Camera::Camera():position_(-1.0, 0.5, -1.0), target_(1.0, -0.2, 1.0), up_(0.0, 1.0, 0.0)
+Camera::Camera():position_(-10.0, 0.0, 0.0), target_(1.0, 0.0, 0.0), up_(0.0, 1.0, 0.0)
 {
 
 }

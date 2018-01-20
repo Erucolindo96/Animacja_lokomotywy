@@ -68,15 +68,19 @@ Scene Scene::getDefaultScene()
 	verts.push_back(v3);
 	verts.push_back(v4); 
 	*/
-	Box b(2, 2, 2, TEX_PATH );
-	//Box drugi(verts, 0.4);
-	b.setTranslation({ 3, -2, 3 } );
-	b.setRotation({1.0, 0.0, 0.0}, glm::radians(45.0));
+	Box b(0.3, 0.3, 0.3, TEX_PATH );
+	b.setTranslation({ 10, 10 , -10 } );
+	//b.setRotation({1.0, 0.0, 0.0}, glm::radians(45.0));
 	Cylinder c(1,1, TEX_PATH);
-	c.setTranslation({ 0.3, 0.2, -0.3 });
+	c.setTranslation({ 10, 10, 10 });
+	Train tr;
+	
+	
+	//c.setRotation({ 0.0, 0.0, 1.0 }, glm::radians(90.0));
 	ret_scene.setActor(b);
 	//ret_scene.setActor(drugi);
 	ret_scene.setActor(c);
+	ret_scene.setActor(tr);
 	return ret_scene;
 	
 }

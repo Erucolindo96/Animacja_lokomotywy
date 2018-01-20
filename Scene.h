@@ -6,6 +6,7 @@
 #include "Box.h"
 #include "Rectangle.h"
 #include "Cylinder.h"
+#include "Train.h"
 class Scene
 {
 protected:

@@ -6,6 +6,7 @@ class Cylinder :
 
 
 public:
+
 	Cylinder();
 	Cylinder(const Cylinder &other);
 	Cylinder(const GLfloat r, const GLfloat h, const std::string texture_path);

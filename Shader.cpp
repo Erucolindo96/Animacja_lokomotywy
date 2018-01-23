@@ -7,6 +7,11 @@ Shader::Shader()
 
 }
 
+Shader::Shader(GLuint other_shader_id):shader_id_(other_shader_id)
+{
+
+}
+
 
 GLuint Shader::getProjectionId() const
 {

@@ -8,7 +8,7 @@ Scene::Scene()
 
 Scene::Scene(const Scene & other)
 {
-	for each (auto &var in other.actors)
+	for (auto &var : other.actors)
 	{
 		actors.push_back(var->clone());
 	}
@@ -26,6 +26,7 @@ Scene & Scene::operator=(const Scene & other)
 	{
 		actors.push_back(actor->clone());
 	}
+	setShaderId(other.shader_id_);
 	return *this;
 }
 
@@ -53,36 +54,28 @@ void Scene::setShaderId(GLuint id)
 
 Scene Scene::getDefaultScene()
 {
-	const std::string TEX_PATH = "..\\Animacja_lokomotywy\\textures\\wood.jpg", TEX_PATH2 = "..\\Animacja_lokomotywy\\textures\\kon_srokaty1.jpg";
-	//teraz defaultowa scena skladac sie bedzie z prostopadlosciany w srodku ekranu
+	const std::string TEX_PATH = "..\\Animacja_lokomotywy\\textures\\metal.jpg";
 	Scene ret_scene;
-	/*
-	Vertex v1(glm::vec3({0.25, 0, 0.25 }),  glm::vec3({0,0,0}), glm::vec2({0,0})), v2(v1), v3(v1), v4(v1);
-	v2.position_ = {0.25, 0, -0.25 };
-	v3.position_ = {-0.25, 0, -0.25 };
-	v3.color_ = { 0.7, 0.6, 0.6 };
-	v4.position_ = { -0.25,  0 , 0.25 };
-	std::vector<Vertex> verts;
-	verts.push_back(v1);
-	verts.push_back(v2);
-	verts.push_back(v3);
-	verts.push_back(v4); 
-	*/
-	Box b(0.3, 0.3, 0.3, TEX_PATH );
-	b.setTranslation({ 10, 10 , -10 } );
-	//b.setRotation({1.0, 0.0, 0.0}, glm::radians(45.0));
-	Cylinder c(1,1, TEX_PATH);
-	c.setTranslation({ 10, 10, 10 });
 	Train tr;
+	Box szyna_lewa(1, 1, 1000, TEX_PATH), szyna_prawa(1, 1, 100, TEX_PATH);
+	szyna_lewa.setDefaultTranslation({ 3, -5, 0 });
+	szyna_prawa.setDefaultTranslation({ -3, -5, 0 });
 	
-	
-	//c.setRotation({ 0.0, 0.0, 1.0 }, glm::radians(90.0));
-	ret_scene.setActor(b);
-	//ret_scene.setActor(drugi);
-	ret_scene.setActor(c);
 	ret_scene.setActor(tr);
+	ret_scene.setActor(szyna_lewa);
+	ret_scene.setActor(szyna_prawa);
 	return ret_scene;
 	
+}
+
+void Scene::incrementRotationOfActor(int actor_nr)
+{
+	actors[actor_nr]->incrementRotationAngle();
+}
+
+void Scene::decrementRotationOfActor(int actor_nr)
+{
+	actors[actor_nr]->decrementRotationAngle();
 }
 
 void Scene::setShaderIdToActors()

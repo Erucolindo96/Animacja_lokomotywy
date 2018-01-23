@@ -11,6 +11,12 @@ Box::Box(const Box & other): Actor(other)
 {
 }
 
+Box & Box::operator=(const Box & other)
+{
+	Actor::operator=(other);
+	return *this;
+}
+
 Box::Box(const std::vector<Vertex>& base, GLfloat height, const std::string &texture_path): Actor()
 {
 	setTextureFromFile(texture_path);

@@ -8,6 +8,7 @@ class Box :
 public:
 	Box();
 	Box(const Box &other);
+	Box& operator=(const Box &other);
 	Box(const GLfloat x_length, const GLfloat y_length, const GLfloat z_length, const std::string &texture_path);
 	
 	virtual std::unique_ptr<Actor> clone()const;

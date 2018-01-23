@@ -8,7 +8,13 @@ class Animation :
 protected:
 	Renderer renderer_;
 	Scene scene_;
+	const unsigned int TRAIN_ID=0;
 
+	void incrementRotationOfTrainWeels();
+	void decrementRotationOfTrainWeels();
+
+	void incrementVelocity();
+	void decrementVelocity();
 
 public:
 	Animation();
@@ -18,6 +24,8 @@ public:
 	void moveBackward();
 	void moveRight();
 	void moveLeft();
+
+
 	void setDefaultScene();
 
 	virtual ~Animation();

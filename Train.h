@@ -11,7 +11,12 @@ protected:
 
 //	typedef std::unique_ptr<Cylinder>  CylinderPtr;
 	//typedef std::unique_ptr<Box> BoxPtr;
-	const std::string METAL_PATH = "..\\Animacja_lokomotywy\\textures\\metal.jpg", WOOD_PATH  = "..\\Animacja_lokomotywy\\textures\\wood.jpg";
+	const std::string METAL_PATH = "..\\Animacja_lokomotywy\\textures\\metal2.jpg", 
+		WOOD_PATH  = "..\\Animacja_lokomotywy\\textures\\metal3.jpg",
+		//OBICIA_PATH = "..\\Animacja_lokomotywy\\textures\\metal.jpg",
+		WHEEL_PATH = "..\\Animacja_lokomotywy\\textures\\kolo.png";
+	int i = 0;
+	
 	static const int ILOSC_KOL = 6, STRONY_KADLUBA = 2;
 	static const int LEWY_PRZOD = 0, PRAWY_PRZOD = 1, LEWY_SRODEK = 2, PRAWY_SRODEK = 3, LEWY_TYL = 4, PRAWY_TYL = 5, LEWE = 0, PRAWE = 1;
 	void countPositionOfObjects();
@@ -25,12 +30,18 @@ protected:
 public:
 	virtual void draw();
 	virtual std::unique_ptr<Actor> clone()const ;
+	virtual void setDefaultTranslation(glm::vec3 translation);
 	virtual void setTranslation(glm::vec3 translation);
-	virtual void setTranslationPriority(Priority p);
+	//virtual void setTranslationPriority(Priority p);
 	virtual void setShaderId(GLuint shader_id);
+	virtual void setDefaultRotation(glm::vec3 rotation_vec, GLfloat angle);
 	virtual void setRotation(glm::vec3 rotation_vec, GLfloat angle);
-	virtual void setRotationPriority(Priority p);
+	//virtual void setRotationPriority(Priority p);
 
+	virtual void incrementRotationAngle();
+	virtual void decrementRotationAngle();
+	virtual void incrementRotationIncrementVelocity();
+	virtual void decrementRotationIncrementVelocity();
 	Train();
 	Train(const Train &other);
 	

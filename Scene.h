@@ -7,12 +7,13 @@
 #include "Rectangle.h"
 #include "Cylinder.h"
 #include "Train.h"
+#include "Skybox.h"
 class Scene
 {
 protected:
 	friend class Renderer;
 
-
+	
 	std::vector < std::unique_ptr<Actor> > actors;
 	GLuint shader_id_;
 	void setShaderIdToActors();
@@ -26,6 +27,9 @@ public:
 	std::unique_ptr<Actor>& getActorReference(int number);
 	void setShaderId(GLuint id);
 	static Scene getDefaultScene();
+
+	void incrementRotationOfActor(int actor_nr);
+	void decrementRotationOfActor(int actor_nr);
 
 	void renderActors();
 

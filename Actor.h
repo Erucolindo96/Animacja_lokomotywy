@@ -41,23 +41,39 @@ class Actor
 {
 public:
 
+	Actor();
+	Actor(const Actor &other);
+	Actor& operator=(const Actor& other);
+
 	static const char TRANSLATION = 0, ROTATION = 1;//numery przeksztalcen
-	const float DELTA = 0.01f;
+	float round_delta = 0.005f;
+	
 	/**
 	Metody s³u¿¹ce do translacji i obrotu aktora.
 	Gdy zostanie wywo³ana metoda draw() tworz¹ macierz przeksztalcenia, zaleznie od danego priorytetu.
 	*/
-	virtual void setTranslation(glm::vec3 translation);
-	virtual void setTranslationPriority(Priority p);
+	virtual void setTranslation(const glm::vec3 &translation);
+	virtual void setDefaultTranslation(glm::vec3 translation);
+	//virtual void setTranslationPriority(Priority p);
 	glm::vec3 getTranslation()const;
+	glm::vec3 getDefaultTranslation()const;
 
-	virtual void setRotation(glm::vec3 rotation_vec, GLfloat angle);
-	virtual void setRotationPriority(Priority p);
+	virtual void setRotation(const glm::vec3 &rotation_vec, GLfloat angle);
+	virtual void setDefaultRotation(glm::vec3 rotation_vec, GLfloat angle);
+	//virtual void setRotationPriority(Priority p);
+	glm::vec3 getDefaultRotationVect()const;
+	GLfloat getDefaultRotationAngle()const;
+
+
 	glm::vec3 getRotationVect()const;
 	GLfloat getRotationAngle()const;
-	virtual void incrementRotationVector();
-	virtual void decrementRotationVector();
-	Priority getPriotiry(char number_of_tranformation);
+
+
+	virtual void incrementRotationAngle();
+	virtual void decrementRotationAngle();
+	virtual void incrementRotationIncrementVelocity();
+	virtual void decrementRotationIncrementVelocity();
+	//Priority getPriotiry(char number_of_tranformation);
 
 
 
@@ -68,9 +84,7 @@ public:
 	GLuint getShaderId()const;
 	virtual void setShaderId(GLuint shader_id);
 	void setShaderModelMatrix(GLuint model_id); //nie uzywac tego
-	/**
-		Metoda rysuje na scenie, za pomoc¹ podanego shadera, wierzcho³ki które zawiera klasa jako trójk¹ty
-	*/
+
 	void setTextureFromFile(std::string file_name);
 	virtual void draw();
 	virtual std::unique_ptr<Actor> clone()const = 0;
@@ -78,19 +92,17 @@ public:
 
 
 protected:
-	Actor();
-	Actor(const Actor &other);
-
-	static const char TRANSFORMATION_CNT = 2;
+	
+	//static const char TRANSFORMATION_CNT = 2;
 	std::vector<Vertex> verts_;
 	std::vector<GLuint> indices_;
 	
-	glm::vec3 translation_;
-	glm::vec3 rotation_vec_;
-	glm::mat4 model_matrix;
+	glm::vec3 default_translation_, translation_;
+	glm::vec3 default_rotation_vec_, rotation_vec_;
+	glm::mat4 default_model_matrix;
 
-	GLfloat rot_angle_;
-	Priority priority_[TRANSFORMATION_CNT];//2 - ilosc przeksztalcen
+	GLfloat default_rot_angle_, rot_angle_;
+	//Priority priority_[TRANSFORMATION_CNT];//2 - ilosc przeksztalcen
 	
 	GLuint shader_id_, model_id_;
 	GLuint VBO_, VAO_, EBO_;
@@ -118,9 +130,9 @@ protected:
 	/**
 	Metoda oblicza macierz przekstalcenia
 	*/
-	glm::mat4 countTransformationMatrix()const;
-
-	char findIndexOfPriority(Priority p);
+	virtual glm::mat4 countDefaultTransformationMatrix()const;
+	virtual glm::mat4 countTransformationMatrix()const;
+	//char findIndexOfPriority(Priority p);
 
 };
 

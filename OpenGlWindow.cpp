@@ -6,6 +6,7 @@ OpenGlWindow::OpenGlWindow()
 {
 	createWindow();
 	setUpOpenGl();
+	int ret = glGetError();
 }
 
 void OpenGlWindow::createWindow()
@@ -14,6 +15,7 @@ void OpenGlWindow::createWindow()
 	{
 		throw GlInitializationFail("GLFW init: Cannot init\n");
 	}
+	
 	//needGLFWdestroy = true;
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -31,10 +33,11 @@ void OpenGlWindow::createWindow()
 
 void OpenGlWindow::setUpOpenGl()
 {
+
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK)
 		throw GlInitializationFail("GLEW: GLEW Initialization failed\n");
-
+	int ret = glGetError();
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glEnable(GL_DEPTH_TEST);
 }

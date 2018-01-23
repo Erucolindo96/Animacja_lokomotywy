@@ -7,7 +7,7 @@ out vec4 FragColor;
 //uniform mat4 view;
 //uniform mat4 projection;
   
-  uniform sampler2D ourTexture;
+uniform sampler2D ourTexture;
 
 void main()
 {

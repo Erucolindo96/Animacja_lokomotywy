@@ -10,6 +10,7 @@ public:
 	GLint getIdTexBuffer()const;
 	virtual ~Texture();
 	virtual std::unique_ptr<Texture> clone()const;
+	std::string getTexturePath()const;
 protected:
 	GLint tex_buffer_id_;
 	std::string texture_path_;

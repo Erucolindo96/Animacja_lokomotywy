@@ -2,34 +2,76 @@
 
 
 
-Actor::Actor(): translation_(0,0,0), rotation_vec_(0,0, 1), rot_angle_(0) //defaultowe wartosci ktore nie zmieniaja po³o¿enia wierzcho³ków
+Actor::Actor(): default_translation_(0,0,0), default_rotation_vec_(0,0, 1), default_rot_angle_(0), translation_(0,0,0), rotation_vec_(0,0,1), rot_angle_(0) //defaultowe wartosci ktore nie zmieniaja po³o¿enia wierzcho³ków
 {
-	priority_[TRANSLATION] = SECOND;
-	priority_[ROTATION] = FIRST;//jakiekolwiek priorytety
+	//priority_[TRANSLATION] = SECOND;
+	//priority_[ROTATION] = FIRST;//jakiekolwiek priorytety
 	initBuffers();
+	//default_model_matrix = countDefaultTransformationMatrix();
 }
 
 Actor::Actor(const Actor & other): verts_(other.verts_), indices_(other.indices_), shader_id_(other.shader_id_)
-, translation_(other.translation_), rotation_vec_(other.rotation_vec_), rot_angle_(other.rot_angle_) 
+, default_translation_(other.default_translation_), default_rotation_vec_(other.default_rotation_vec_), default_rot_angle_(other.default_rot_angle_),
+translation_(other.translation_), rotation_vec_(other.rotation_vec_), rot_angle_(other.rot_angle_)
 {
 	if (other.texture_ptr_.get() != nullptr)
 	{
 		texture_ptr_ = other.texture_ptr_->clone();
 	}
-	priority_[TRANSLATION] = other.priority_[TRANSLATION];
-	priority_[ROTATION] = other.priority_[ROTATION];
+	//priority_[TRANSLATION] = other.priority_[TRANSLATION];
+	//priority_[ROTATION] = other.priority_[ROTATION];
 	initBuffers();
 	bindVertexAndIndices();//zakladamy ze kopiowane pola sa znane i dlatego to wolamy
-	//countTransformationMatrix();
+	//default_model_matrix = countDefaultTransformationMatrix();
+}
+
+Actor & Actor::operator=(const Actor & other)
+{
+	if (&other == this)
+		return *this;
+	verts_ = other.verts_;
+	indices_ = other.indices_;
+	default_translation_ = other.default_translation_;
+	translation_ = other.translation_;
+	default_rotation_vec_ = other.default_rotation_vec_;
+	rotation_vec_ = other.rotation_vec_;
+
+
+	//default_model_matrix = default_model_matrix;
+
+	default_rot_angle_ = other.default_rot_angle_;
+	rot_angle_ = other.rot_angle_;
+	/*for (int i = 0; i < TRANSFORMATION_CNT; ++i)
+	{
+		priority_[i] = other.priority_[i];
+	}
+	*/
+	shader_id_ = other.shader_id_;
+	model_id_ = other.model_id_;
+	if(other.texture_ptr_.get() != nullptr)
+		texture_ptr_ =  std::unique_ptr<Texture>(new Texture(other.texture_ptr_->getTexturePath()));
+	initBuffers();
+	bindVertexAndIndices();//zakladamy ze kopiowane pola sa znane i dlatego to wolamy
+
 }
 
 
-void Actor::setTranslation(glm::vec3 translation)
+void Actor::setTranslation(const glm::vec3 & translation)
 {
 	translation_ = translation;
-	//countTransformationMatrix();
 }
 
+void Actor::setDefaultTranslation(glm::vec3 translation)
+{
+	default_translation_ = translation;
+	//default_model_matrix = countDefaultTransformationMatrix();
+	//countTransformationMatrix();
+}
+glm::vec3 Actor::getTranslation() const
+{
+	return translation_;
+}
+/*
 void Actor::setTranslationPriority(Priority p)
 {
 	if(findIndexOfPriority(p) != -1)
@@ -37,25 +79,42 @@ void Actor::setTranslationPriority(Priority p)
 	priority_[TRANSLATION] = p;
 	//countTransformationMatrix();
 }
-
-glm::vec3 Actor::getTranslation() const
+*/
+glm::vec3 Actor::getDefaultTranslation() const
 {
-	return translation_;
+	return default_translation_;
 }
 
-void Actor::setRotation(glm::vec3 rotation_vec, GLfloat angle)
+void Actor::setRotation(const glm::vec3 & rotation_vec, GLfloat angle)
 {
 	rotation_vec_ = rotation_vec;
 	rot_angle_ = angle;
-	//countTransformationMatrix();
 }
 
+void Actor::setDefaultRotation(glm::vec3 rotation_vec, GLfloat angle)
+{
+	default_rotation_vec_ = rotation_vec;
+	default_rot_angle_ = angle;
+	//default_model_matrix = countDefaultTransformationMatrix();
+	//countTransformationMatrix();
+}
+/*
 void Actor::setRotationPriority(Priority p)
 {
 	if (findIndexOfPriority(p) != -1)
 		throw std::logic_error("Actor::setTranslation - priorytet juz istnieje");
 	priority_[ROTATION] = p;
 	//countTransformationMatrix();
+}
+*/
+glm::vec3 Actor::getDefaultRotationVect() const
+{
+	return default_rotation_vec_;
+}
+
+GLfloat Actor::getDefaultRotationAngle() const
+{
+	return default_rot_angle_;
 }
 
 glm::vec3 Actor::getRotationVect() const
@@ -66,23 +125,33 @@ glm::vec3 Actor::getRotationVect() const
 GLfloat Actor::getRotationAngle() const
 {
 	return rot_angle_;
+
 }
 
-void Actor::incrementRotationVector()
+void Actor::incrementRotationAngle()
 {
-	rot_angle_ += DELTA;
+	rot_angle_ += round_delta;
 }
 
-void Actor::decrementRotationVector()
+void Actor::decrementRotationAngle()
 {
-	rot_angle_ -= DELTA;
+	rot_angle_ -= round_delta;
 }
-
-Priority Actor::getPriotiry(char number_of_tranformation)
+void Actor::incrementRotationIncrementVelocity()
 {
-	if (number_of_tranformation >= TRANSFORMATION_CNT || number_of_tranformation < 0)
-		throw std::out_of_range("Actor::get Priority - nie istnieje transformacja o takim priorytecie");
-	return priority_[number_of_tranformation];
+	const float MAX_DELTA = 0.5, INC_VAL = 0.0001;
+	if (round_delta >= MAX_DELTA)
+		return;
+	round_delta += INC_VAL;
+
+
+}
+void Actor::decrementRotationIncrementVelocity()
+{
+	const float MIN_DELTA = 0.001, DEC_VAL = 0.0001;
+	if (round_delta <= MIN_DELTA)
+		return;
+	round_delta -= DEC_VAL;
 }
 
 void Actor::loadAndSetTexture(const std::string &path)
@@ -98,18 +167,15 @@ void Actor::setTextureFromFile(std::string file_name)
 
 void Actor::draw()
 {
-	//dolacza swoja macierz przeksztalcenia - aby przeksztalcic swoje wierzcholki
 	glUseProgram(shader_id_);
-	
-	model_matrix = countTransformationMatrix();
+	//dolacza swoja macierz przeksztalcenia - aby przeksztalcic swoje wierzcholki
+	glm::mat4 model_mat = countTransformationMatrix();
 	GLuint model_Uniform = glGetUniformLocation(shader_id_, "model");
-	glUniformMatrix4fv(model_Uniform, 1, GL_FALSE, glm::value_ptr(model_matrix));
+	glUniformMatrix4fv(model_Uniform, 1, GL_FALSE, glm::value_ptr(model_mat));
 	
-	//throw std::runtime_error("TODO");
 	glBindVertexArray(VAO_);
 	glBindTexture(GL_TEXTURE_2D, texture_ptr_->getIdTexBuffer());
-	//mozna tu dopisac uzycie shadera
-	
+
 	glDrawElements(GL_TRIANGLES, (GLsizei)indices_.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -181,9 +247,6 @@ void Actor::bindVertexAndIndices()
 	//normalnych
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal_));
-	//koloru
-	//glEnableVertexAttribArray(2);
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color_));
 	//tekstury
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, textCoord_));
@@ -196,37 +259,26 @@ void Actor::countAndSetVertsAndIndices()
 {
 }
 
-glm::mat4 Actor::countTransformationMatrix() const
+glm::mat4 Actor::countDefaultTransformationMatrix() const
 {
 	glm::mat4 transformation(1.0);
-	if (priority_[TRANSLATION] == FIRST)
-	{
-		transformation = glm::translate(transformation, translation_);
-		transformation = glm::rotate(transformation, rot_angle_, rotation_vec_);
-	}
-	else if (priority_[ROTATION] == FIRST)
-	{
-		transformation = glm::translate(transformation, translation_);
-		transformation = glm::rotate(transformation, rot_angle_, rotation_vec_);
-	}
-	else
-	{
-		throw std::runtime_error("Wartosc priorytetu inna niz dozwolona");
-	}
+
+	transformation = glm::translate(transformation, default_translation_);
+	transformation = glm::rotate(transformation, default_rot_angle_, default_rotation_vec_);
 
 	return transformation;
 }
-
-char Actor::findIndexOfPriority(Priority p)
+glm::mat4 Actor::countTransformationMatrix() const
 {
-	for (char i = 0; i < TRANSFORMATION_CNT; ++i)
-	{
-		if (priority_[i] == p)
-			return i;
-	}
-	return -1;
-}
+	glm::mat4 transformation(1.0);
+	transformation = glm::translate(transformation, translation_);
+	transformation = glm::translate(transformation, default_translation_);
 
+	transformation = glm::rotate(transformation, rot_angle_, rotation_vec_);
+	transformation = glm::rotate(transformation, default_rot_angle_, default_rotation_vec_);
+
+	return transformation;
+}
 
 
 Vertex::Vertex()

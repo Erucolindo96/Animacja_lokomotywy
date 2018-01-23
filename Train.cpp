@@ -24,13 +24,32 @@ std::unique_ptr<Actor> Train::clone() const
 	return std::unique_ptr<Actor>(new Train(*this));
 }
 
+void Train::setDefaultTranslation(glm::vec3 translation)
+{
+	Actor::setDefaultTranslation(translation);
+	//przesuniecie skladowych aktorow
+	kadlub_->setDefaultTranslation(translation + DEFAULT_POS_KADLUB);
+	poklad_->setDefaultTranslation(translation + DEFAULT_POS_POKLAD);
+	komin_->setDefaultTranslation(translation + DEFAULT_POS_KOMIN);
+	obicia_kadluba_[LEWE]->setDefaultTranslation(translation + DEFAULT_POS_OBICIE_LEWE);
+	obicia_kadluba_[PRAWE]->setDefaultTranslation(translation + DEFAULT_POS_OBICIE_PRAWE);
+	dolne_obicie_kadluba->setDefaultTranslation(translation + DEFAULT_POS_DOLNE_OBICIE);
+	kolo_[LEWY_PRZOD]->setDefaultTranslation(translation + DEFAULT_POS_LP);
+	kolo_[PRAWY_PRZOD]->setDefaultTranslation(translation + DEFAULT_POS_PP);
+	kolo_[LEWY_SRODEK]->setDefaultTranslation(translation + DEFAULT_POS_LS);
+	kolo_[PRAWY_SRODEK]->setDefaultTranslation(translation + DEFAULT_POS_PS);
+	kolo_[LEWY_TYL]->setDefaultTranslation(translation + DEFAULT_POS_LT);
+	kolo_[PRAWY_TYL]->setDefaultTranslation(translation + DEFAULT_POS_PT);
+}
+
 void Train::setTranslation(glm::vec3 translation)
 {
+	throw std::runtime_error("TODO");
 	Actor::setTranslation(translation);
 	//przesuniecie skladowych aktorow
 	kadlub_->setTranslation(translation + DEFAULT_POS_KADLUB);
 	poklad_->setTranslation(translation + DEFAULT_POS_POKLAD);
-	komin_-> setTranslation(translation + DEFAULT_POS_KOMIN);
+	komin_->setTranslation(translation + DEFAULT_POS_KOMIN);
 	obicia_kadluba_[LEWE]->setTranslation(translation + DEFAULT_POS_OBICIE_LEWE);
 	obicia_kadluba_[PRAWE]->setTranslation(translation + DEFAULT_POS_OBICIE_PRAWE);
 	dolne_obicie_kadluba->setTranslation(translation + DEFAULT_POS_DOLNE_OBICIE);
@@ -40,6 +59,7 @@ void Train::setTranslation(glm::vec3 translation)
 	kolo_[PRAWY_SRODEK]->setTranslation(translation + DEFAULT_POS_PS);
 	kolo_[LEWY_TYL]->setTranslation(translation + DEFAULT_POS_LT);
 	kolo_[PRAWY_TYL]->setTranslation(translation + DEFAULT_POS_PT);
+
 	/*	for (auto &b : obicia_kadluba_)
 	{
 		b->setTranslation(translation);
@@ -52,7 +72,7 @@ void Train::setTranslation(glm::vec3 translation)
 	}
 */
 }
-
+/*
 void Train::setTranslationPriority(Priority p)
 {
 	throw std::runtime_error("TODO");
@@ -70,7 +90,7 @@ void Train::setTranslationPriority(Priority p)
 		c->setTranslationPriority(p);
 	}
 }
-
+*/
 void Train::setShaderId(GLuint shader_id)
 {
 	Actor::setShaderId(shader_id);
@@ -89,61 +109,97 @@ void Train::setShaderId(GLuint shader_id)
 	}
 }
 
+void Train::setDefaultRotation(glm::vec3 rotation_vec, GLfloat angle)
+{
+	throw std::runtime_error("TODO - nie uzywac tego, bo to robi konstruktor");
+}
+
 void Train::setRotation(glm::vec3 rotation_vec, GLfloat angle)
 {
 	throw std::runtime_error("TODO");
-	Actor::setRotation(rotation_vec, angle);
-	komin_->setRotation(rotation_vec, angle);
-	poklad_->setRotation(rotation_vec, angle);
+	Actor::setDefaultRotation(rotation_vec, angle);
+	komin_->setDefaultRotation(rotation_vec, angle);
+	poklad_->setDefaultRotation(rotation_vec, angle);
 	for (auto &b : obicia_kadluba_)
 	{
-		b->setRotation(rotation_vec, angle);
+		b->setDefaultRotation(rotation_vec, angle);
 	}
-	komin_->setRotation(rotation_vec, angle);
-	kadlub_->setRotation(rotation_vec, angle);
+	komin_->setDefaultRotation(rotation_vec, angle);
+	kadlub_->setDefaultRotation(rotation_vec, angle);
 	for (auto &c : kolo_)
 	{
-		c->setRotation(rotation_vec, angle);
+		c->setDefaultRotation(rotation_vec, angle);
 	}
 }
 
-void Train::setRotationPriority(Priority p)
+
+void Train::incrementRotationAngle()
 {
-	throw std::runtime_error("TODO");
+
+	for (auto &kolo : kolo_)
+	{
+		kolo->incrementRotationAngle();
+	}
+}
+
+void Train::decrementRotationAngle()
+{
+	for (auto &kolo : kolo_)
+	{
+		kolo->decrementRotationAngle();
+	}
+}
+
+void Train::incrementRotationIncrementVelocity()
+{
+	for (auto &kolo : kolo_)
+	{
+		kolo->incrementRotationIncrementVelocity();
+	}
+}
+
+void Train::decrementRotationIncrementVelocity()
+{
+	for (auto &kolo : kolo_)
+	{
+		kolo->decrementRotationIncrementVelocity();
+	}
 }
 
 Train::Train() :Actor()
 {
 	kadlub_ = std::unique_ptr<Cylinder>(new Cylinder(3.0, 15, METAL_PATH));
-	kadlub_->setTranslation(DEFAULT_POS_KADLUB);
+	kadlub_->setDefaultTranslation(DEFAULT_POS_KADLUB);
 	
 	poklad_ = std::unique_ptr<Box>(new Box(6, 9, 5, WOOD_PATH));
-	poklad_->setTranslation(DEFAULT_POS_POKLAD);
+	poklad_->setDefaultTranslation(DEFAULT_POS_POKLAD);
 	
-	komin_ = std::unique_ptr<Cylinder>(new Cylinder(1.5, 3, WOOD_PATH));
-	komin_->setTranslation(DEFAULT_POS_KOMIN);
-	komin_->setRotation({ 1.0, 0.0, 0.0 }, glm::radians(90.0));
+	komin_ = std::unique_ptr<Cylinder>(new Cylinder(1.5, 3, METAL_PATH));
+	komin_->setDefaultTranslation(DEFAULT_POS_KOMIN);
+	komin_->setDefaultRotation({ 1.0, 0.0, 0.0 }, glm::radians(90.0));
 	
 	for (auto &ob : obicia_kadluba_)
 	{
-		ob = std::unique_ptr<Box>(new Box(0.5, 2, 14.9, WOOD_PATH));
+		ob = std::unique_ptr<Box>(new Box(0.5, 2, 14.9, METAL_PATH));
 	}
-	obicia_kadluba_[LEWE]->setTranslation(DEFAULT_POS_OBICIE_LEWE);
-	obicia_kadluba_[PRAWE]->setTranslation(DEFAULT_POS_OBICIE_PRAWE);
+	obicia_kadluba_[LEWE]->setDefaultTranslation(DEFAULT_POS_OBICIE_LEWE);
+	obicia_kadluba_[PRAWE]->setDefaultTranslation(DEFAULT_POS_OBICIE_PRAWE);
 	dolne_obicie_kadluba = std::unique_ptr<Box>(new Box(4.5, 0.5, 14.9, WOOD_PATH));
-	dolne_obicie_kadluba->setTranslation(DEFAULT_POS_DOLNE_OBICIE);
+	dolne_obicie_kadluba->setDefaultTranslation(DEFAULT_POS_DOLNE_OBICIE);
 	
+	const glm::vec3 WHEEL_ROT_VEC = { -1,0,0 };
 	for (auto &kolo : kolo_)
 	{
-		kolo = std::unique_ptr<Cylinder>(new Cylinder(1.5, 0.5, METAL_PATH));
-		kolo->setRotation({ 0.0, 1.0, 0.0 }, glm::radians(90.0));
+		kolo = std::unique_ptr<Cylinder>(new Cylinder(1.5, 0.5, WHEEL_PATH));
+		kolo->setDefaultRotation({ 0.0, 1.0, 0.0 }, glm::radians(90.0));
+		kolo->setRotation(WHEEL_ROT_VEC, 0);
 	}
-	kolo_[LEWY_PRZOD]->setTranslation(DEFAULT_POS_LP);
-	kolo_[PRAWY_PRZOD]->setTranslation(DEFAULT_POS_PP);
-	kolo_[LEWY_SRODEK]->setTranslation(DEFAULT_POS_LS);
-	kolo_[PRAWY_SRODEK]->setTranslation(DEFAULT_POS_PS);
-	kolo_[LEWY_TYL]->setTranslation(DEFAULT_POS_LT);
-	kolo_[PRAWY_TYL]->setTranslation(DEFAULT_POS_PT);
+	kolo_[LEWY_PRZOD]->setDefaultTranslation(DEFAULT_POS_LP);
+	kolo_[PRAWY_PRZOD]->setDefaultTranslation(DEFAULT_POS_PP);
+	kolo_[LEWY_SRODEK]->setDefaultTranslation(DEFAULT_POS_LS);
+	kolo_[PRAWY_SRODEK]->setDefaultTranslation(DEFAULT_POS_PS);
+	kolo_[LEWY_TYL]->setDefaultTranslation(DEFAULT_POS_LT);
+	kolo_[PRAWY_TYL]->setDefaultTranslation(DEFAULT_POS_PT);
 
 }
 

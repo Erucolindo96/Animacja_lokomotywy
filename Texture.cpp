@@ -22,6 +22,11 @@ std::unique_ptr<Texture> Texture::clone() const
 	return std::unique_ptr<Texture>(new Texture(this->texture_path_));
 }
 
+std::string Texture::getTexturePath() const
+{
+	return texture_path_;
+}
+
 void Texture::loadTextureFromFile(const std::string &tex_path)
 {
 	int width, height, nrChannels;

@@ -6,19 +6,17 @@ class Cylinder :
 
 
 public:
-
+	static const GLuint CIRCLE_VERTS_COUNT = 20;
 	Cylinder();
 	Cylinder(const Cylinder &other);
-	Cylinder(const GLfloat r, const GLfloat h, const std::string texture_path);
+	Cylinder(const GLfloat r, const GLfloat h, const std::string texture_path, const GLuint verts_count = CIRCLE_VERTS_COUNT);
 
 	virtual std::unique_ptr<Actor> clone()const;
 	virtual ~Cylinder();
 protected:
 
-	Cylinder(const std::vector<Vertex> &sign_square_verts, const GLfloat height);
 	virtual void countAndSetVertsAndIndices(const GLfloat r, const GLfloat h, GLuint sides);
 
-	virtual void countAndSetVertsAndIndices(std::vector<Vertex> &&base, const GLfloat height);
-	std::vector<Vertex> countCylinderBase(const std::vector<Vertex> &sign_square_verts, const Vertex center_vertex);
+	
 };
 

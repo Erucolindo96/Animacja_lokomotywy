@@ -32,12 +32,22 @@ void Renderer::moveCameraBackward()
 
 void Renderer::moveCameraRight()
 {
-	camera_.moveRight();
+	camera_.roundRight();
 }
 
 void Renderer::moveCameraLeft()
 {
-	camera_.moveLeft();
+	camera_.roundLeft();
+}
+
+void Renderer::moveCameraUp()
+{
+	camera_.moveUp();
+}
+
+void Renderer::moveCameraDown()
+{
+	camera_.moveDown();
 }
 
 

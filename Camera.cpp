@@ -22,40 +22,8 @@ Camera & Camera::operator=(const Camera & other)
 	target_ = other.target_;
 	up_ = other.up_;
 	return *this;
-
-	// TODO: insert return statement here
-}
-/*
-void Camera::setVerticalAngle(GLfloat angle)
-{
-	vAngle_ = angle;
 }
 
-GLfloat Camera::getVerticalAngle() const
-{
-	return vAngle_;
-}
-
-void Camera::setHorizontalAngle(GLfloat angle)
-{
-	hAngle_ = angle;
-}
-
-GLfloat Camera::getHorizontalAngle() const
-{
-	return hAngle_;
-}
-
-void Camera::setDistance(GLfloat dis)
-{
-	distance_ = dis;
-}
-
-GLfloat Camera::getDistance() const
-{
-	return distance_;
-}
-*/
 void Camera::setTarget(const glm::vec3 &target)
 {
 	target_ = target;
@@ -96,9 +64,7 @@ void Camera::setDefaultPosition()
 }
 glm::mat4 Camera::getViewMatrix() const
 {
-	//return glm::mat4(1.0);
-	//TODO
-	return glm::lookAt(position_, target_, up_); 
+	return glm::lookAt(position_, position_ + target_, up_); 
 }
 void Camera::moveForward()
 {
@@ -108,49 +74,28 @@ void Camera::moveBackward()
 {
 	position_ -= DELTA* glm::normalize(target_);
 }
-void Camera::moveRight()
+void Camera::roundRight()
 {
-	position_ += DELTA * glm::normalize(glm::cross(target_, up_));
+	target_ = glm::rotateY(target_, -glm::radians(ANGLE_DELTA));
+
 }
-void Camera::moveLeft()
+void Camera::roundLeft()
 {
-	position_ -= DELTA * glm::normalize(glm::cross(target_, up_));
-}
-/*
-void Camera::incrementHorizontalAngle()
-{
-	hAngle_ += DELTA;
+	target_ = glm::rotateY(target_, glm::radians(ANGLE_DELTA));
+
 }
 
-void Camera::incrementVerticalAngle()
+void Camera::moveDown()
 {
-	if (vAngle_ < MAX_VERTICAL)
-		vAngle_ += DELTA;
+	if(position_.y >= FLOOR_Y_POS)
+		position_ -= DELTA* glm::normalize(up_);
 }
 
-void Camera::decrementHorizontalAngle()
+void Camera::moveUp()
 {
-	hAngle_ -= DELTA;
+	if(position_.y <= MAX_Y_POS)
+		position_ += DELTA* glm::normalize(up_);
 }
-
-void Camera::decrementVerticalAngle()
-{
-	if (vAngle_ > MIN_VERTICAL)
-		vAngle_ -= DELTA;
-}
-
-void Camera::incrementDistance()
-{
-	if (distance_ < MAX_DIS)
-		distance_ += DELTA;
-}
-
-void Camera::decrementDistance()
-{
-	if (distance_ > MIN_DIS)
-		distance_ -= DELTA;
-}
-*/
 
 Camera::~Camera()
 {

@@ -4,10 +4,9 @@
 
 Actor::Actor(): default_translation_(0,0,0), default_rotation_vec_(0,0, 1), default_rot_angle_(0), translation_(0,0,0), rotation_vec_(0,0,1), rot_angle_(0) //defaultowe wartosci ktore nie zmieniaja po³o¿enia wierzcho³ków
 {
-	//priority_[TRANSLATION] = SECOND;
-	//priority_[ROTATION] = FIRST;//jakiekolwiek priorytety
+	
 	initBuffers();
-	//default_model_matrix = countDefaultTransformationMatrix();
+	
 }
 
 Actor::Actor(const Actor & other): verts_(other.verts_), indices_(other.indices_), shader_id_(other.shader_id_)
@@ -18,11 +17,10 @@ translation_(other.translation_), rotation_vec_(other.rotation_vec_), rot_angle_
 	{
 		texture_ptr_ = other.texture_ptr_->clone();
 	}
-	//priority_[TRANSLATION] = other.priority_[TRANSLATION];
-	//priority_[ROTATION] = other.priority_[ROTATION];
+
 	initBuffers();
 	bindVertexAndIndices();//zakladamy ze kopiowane pola sa znane i dlatego to wolamy
-	//default_model_matrix = countDefaultTransformationMatrix();
+
 }
 
 Actor & Actor::operator=(const Actor & other)
@@ -37,15 +35,10 @@ Actor & Actor::operator=(const Actor & other)
 	rotation_vec_ = other.rotation_vec_;
 
 
-	//default_model_matrix = default_model_matrix;
 
 	default_rot_angle_ = other.default_rot_angle_;
 	rot_angle_ = other.rot_angle_;
-	/*for (int i = 0; i < TRANSFORMATION_CNT; ++i)
-	{
-		priority_[i] = other.priority_[i];
-	}
-	*/
+
 	shader_id_ = other.shader_id_;
 	model_id_ = other.model_id_;
 	if(other.texture_ptr_.get() != nullptr)
@@ -64,22 +57,13 @@ void Actor::setTranslation(const glm::vec3 & translation)
 void Actor::setDefaultTranslation(glm::vec3 translation)
 {
 	default_translation_ = translation;
-	//default_model_matrix = countDefaultTransformationMatrix();
-	//countTransformationMatrix();
+
 }
 glm::vec3 Actor::getTranslation() const
 {
 	return translation_;
 }
-/*
-void Actor::setTranslationPriority(Priority p)
-{
-	if(findIndexOfPriority(p) != -1)
-		throw std::logic_error("Actor::setTranslation - priorytet juz istnieje");
-	priority_[TRANSLATION] = p;
-	//countTransformationMatrix();
-}
-*/
+
 glm::vec3 Actor::getDefaultTranslation() const
 {
 	return default_translation_;
@@ -95,18 +79,9 @@ void Actor::setDefaultRotation(glm::vec3 rotation_vec, GLfloat angle)
 {
 	default_rotation_vec_ = rotation_vec;
 	default_rot_angle_ = angle;
-	//default_model_matrix = countDefaultTransformationMatrix();
-	//countTransformationMatrix();
+
 }
-/*
-void Actor::setRotationPriority(Priority p)
-{
-	if (findIndexOfPriority(p) != -1)
-		throw std::logic_error("Actor::setTranslation - priorytet juz istnieje");
-	priority_[ROTATION] = p;
-	//countTransformationMatrix();
-}
-*/
+
 glm::vec3 Actor::getDefaultRotationVect() const
 {
 	return default_rotation_vec_;
@@ -194,10 +169,7 @@ void Actor::setShaderId(GLuint shader_id)
 	shader_id_ = shader_id;
 }
 
-void Actor::setShaderModelMatrix(GLuint model_id)
-{
-	model_id_ = model_id;
-}
+
 
 GLuint Actor::getShaderId() const
 {
@@ -259,15 +231,6 @@ void Actor::countAndSetVertsAndIndices()
 {
 }
 
-glm::mat4 Actor::countDefaultTransformationMatrix() const
-{
-	glm::mat4 transformation(1.0);
-
-	transformation = glm::translate(transformation, default_translation_);
-	transformation = glm::rotate(transformation, default_rot_angle_, default_rotation_vec_);
-
-	return transformation;
-}
 glm::mat4 Actor::countTransformationMatrix() const
 {
 	glm::mat4 transformation(1.0);

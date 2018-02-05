@@ -60,37 +60,8 @@ void Train::setTranslation(glm::vec3 translation)
 	kolo_[LEWY_TYL]->setTranslation(translation + DEFAULT_POS_LT);
 	kolo_[PRAWY_TYL]->setTranslation(translation + DEFAULT_POS_PT);
 
-	/*	for (auto &b : obicia_kadluba_)
-	{
-		b->setTranslation(translation);
-	}
-*/
-	
-/*	for (auto &c : kolo)
-	{
-		c->setTranslation(translation);
-	}
-*/
 }
-/*
-void Train::setTranslationPriority(Priority p)
-{
-	throw std::runtime_error("TODO");
-	Actor::setTranslationPriority(p);
-	komin_->setTranslationPriority(p);
-	poklad_->setTranslationPriority(p);
-	for (auto &b : obicia_kadluba_)
-	{
-		b->setTranslationPriority(p);
-	}
-	komin_->setTranslationPriority(p);
-	kadlub_->setTranslationPriority(p);
-	for (auto &c : kolo_)
-	{
-		c->setTranslationPriority(p);
-	}
-}
-*/
+
 void Train::setShaderId(GLuint shader_id)
 {
 	Actor::setShaderId(shader_id);
@@ -117,19 +88,7 @@ void Train::setDefaultRotation(glm::vec3 rotation_vec, GLfloat angle)
 void Train::setRotation(glm::vec3 rotation_vec, GLfloat angle)
 {
 	throw std::runtime_error("TODO");
-	Actor::setDefaultRotation(rotation_vec, angle);
-	komin_->setDefaultRotation(rotation_vec, angle);
-	poklad_->setDefaultRotation(rotation_vec, angle);
-	for (auto &b : obicia_kadluba_)
-	{
-		b->setDefaultRotation(rotation_vec, angle);
-	}
-	komin_->setDefaultRotation(rotation_vec, angle);
-	kadlub_->setDefaultRotation(rotation_vec, angle);
-	for (auto &c : kolo_)
-	{
-		c->setDefaultRotation(rotation_vec, angle);
-	}
+	
 }
 
 
@@ -168,23 +127,23 @@ void Train::decrementRotationIncrementVelocity()
 
 Train::Train() :Actor()
 {
-	kadlub_ = std::unique_ptr<Cylinder>(new Cylinder(3.0, 15, METAL_PATH));
+	kadlub_ = std::unique_ptr<Cylinder>(new Cylinder(3.0, 15, KADLUB_PATH, 10));
 	kadlub_->setDefaultTranslation(DEFAULT_POS_KADLUB);
 	
-	poklad_ = std::unique_ptr<Box>(new Box(6, 9, 5, WOOD_PATH));
+	poklad_ = std::unique_ptr<Box>(new Box(6, 9, 5, RUST2_PATH));
 	poklad_->setDefaultTranslation(DEFAULT_POS_POKLAD);
 	
-	komin_ = std::unique_ptr<Cylinder>(new Cylinder(1.5, 3, METAL_PATH));
+	komin_ = std::unique_ptr<Cylinder>(new Cylinder(1, 3, RUST_PATH));
 	komin_->setDefaultTranslation(DEFAULT_POS_KOMIN);
 	komin_->setDefaultRotation({ 1.0, 0.0, 0.0 }, glm::radians(90.0));
 	
 	for (auto &ob : obicia_kadluba_)
 	{
-		ob = std::unique_ptr<Box>(new Box(0.5, 2, 14.9, METAL_PATH));
+		ob = std::unique_ptr<Box>(new Box(0.5, 2, 14.9, RUST2_PATH));
 	}
 	obicia_kadluba_[LEWE]->setDefaultTranslation(DEFAULT_POS_OBICIE_LEWE);
 	obicia_kadluba_[PRAWE]->setDefaultTranslation(DEFAULT_POS_OBICIE_PRAWE);
-	dolne_obicie_kadluba = std::unique_ptr<Box>(new Box(4.5, 0.5, 14.9, WOOD_PATH));
+	dolne_obicie_kadluba = std::unique_ptr<Box>(new Box(4.5, 0.5, 14.9, RUST2_PATH));
 	dolne_obicie_kadluba->setDefaultTranslation(DEFAULT_POS_DOLNE_OBICIE);
 	
 	const glm::vec3 WHEEL_ROT_VEC = { -1,0,0 };

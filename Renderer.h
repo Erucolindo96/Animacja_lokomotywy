@@ -10,7 +10,6 @@
 class Renderer
 {
 protected:
-	//Scene scene_to_render;
 	const char* DEFAULT_VERT_SHADER = "..\\Animacja_lokomotywy\\shaders_code\\main.vert";
 	const char* DEFAULT_FRAG_SHADER = "..\\Animacja_lokomotywy\\shaders_code\\main.frag";
 	const char* DEFAULT_SKYBOX_TEXTURE = "..\\Animacja_lokomotywy\\textures\\wood.jpg";
@@ -33,7 +32,7 @@ protected:
 	//Skybox skybox_;
 
 	Shader shader_;
-	const GLfloat FAR = 100.0f , NEAR = 0.01;
+	const GLfloat FAR = 500.0f , NEAR = 0.01;
 	GLfloat fov_;
 	
 
@@ -48,6 +47,8 @@ public:
 	void moveCameraBackward();
 	void moveCameraRight();
 	void moveCameraLeft();
+	void moveCameraUp();
+	void moveCameraDown();
 
 	void render(Scene &scene)const;
 	glm::mat4x4 getProjectionMatrix()const;

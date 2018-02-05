@@ -48,19 +48,16 @@ public:
 	static const char TRANSLATION = 0, ROTATION = 1;//numery przeksztalcen
 	float round_delta = 0.005f;
 	
-	/**
-	Metody s³u¿¹ce do translacji i obrotu aktora.
-	Gdy zostanie wywo³ana metoda draw() tworz¹ macierz przeksztalcenia, zaleznie od danego priorytetu.
-	*/
+
 	virtual void setTranslation(const glm::vec3 &translation);
 	virtual void setDefaultTranslation(glm::vec3 translation);
-	//virtual void setTranslationPriority(Priority p);
+	
 	glm::vec3 getTranslation()const;
 	glm::vec3 getDefaultTranslation()const;
 
 	virtual void setRotation(const glm::vec3 &rotation_vec, GLfloat angle);
 	virtual void setDefaultRotation(glm::vec3 rotation_vec, GLfloat angle);
-	//virtual void setRotationPriority(Priority p);
+	
 	glm::vec3 getDefaultRotationVect()const;
 	GLfloat getDefaultRotationAngle()const;
 
@@ -73,7 +70,7 @@ public:
 	virtual void decrementRotationAngle();
 	virtual void incrementRotationIncrementVelocity();
 	virtual void decrementRotationIncrementVelocity();
-	//Priority getPriotiry(char number_of_tranformation);
+	
 
 
 
@@ -83,7 +80,6 @@ public:
 
 	GLuint getShaderId()const;
 	virtual void setShaderId(GLuint shader_id);
-	void setShaderModelMatrix(GLuint model_id); //nie uzywac tego
 
 	void setTextureFromFile(std::string file_name);
 	virtual void draw();
@@ -93,7 +89,6 @@ public:
 
 protected:
 	
-	//static const char TRANSFORMATION_CNT = 2;
 	std::vector<Vertex> verts_;
 	std::vector<GLuint> indices_;
 	
@@ -102,7 +97,6 @@ protected:
 	glm::mat4 default_model_matrix;
 
 	GLfloat default_rot_angle_, rot_angle_;
-	//Priority priority_[TRANSFORMATION_CNT];//2 - ilosc przeksztalcen
 	
 	GLuint shader_id_, model_id_;
 	GLuint VBO_, VAO_, EBO_;
@@ -115,24 +109,21 @@ protected:
 		Metoda twrozy bufory OpenGla
 	*/
 	void initBuffers();
+
 	/**
-		Metoda tworzy bufory OpenGla 
+	Metoda dolacza  do buforow OpenGla wartosci pol klasy
+	Nalezy ja zawolac w konstruktorach klas pochodnych gdy zostana juz dodane wartosci pol klasy
 	*/
-	
 	void bindVertexAndIndices();
-	/**
-		Metoda dolacza  do buforow OpenGla wartosci pol klasy
-		Nalezy ja zawolac w konstruktorach klas pochodnych gdy zostana juz dodane wartosci pol klasy
-	*/
+
 	virtual void countAndSetVertsAndIndices();
 
 	virtual void loadAndSetTexture(const std::string &path);
+	
 	/**
 	Metoda oblicza macierz przekstalcenia
 	*/
-	virtual glm::mat4 countDefaultTransformationMatrix()const;
 	virtual glm::mat4 countTransformationMatrix()const;
-	//char findIndexOfPriority(Priority p);
-
+	
 };
 

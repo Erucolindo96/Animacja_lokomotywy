@@ -5,7 +5,7 @@ class Rectangle :
 {
 public:
 
-	Rectangle(std::vector<Vertex> verts);
+	Rectangle(const GLfloat x_length, const GLfloat z_length, const GLfloat height, const std::string & texture_path);
 	Rectangle(const Rectangle &other);
 	virtual ~Rectangle();
 	virtual std::unique_ptr<Actor> clone()const;

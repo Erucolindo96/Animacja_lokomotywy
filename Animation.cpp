@@ -20,6 +20,12 @@ void Animation::reactOnEvents()
 		moveRight();
 	if (isKeyPressed(GLFW_KEY_S))
 		moveBackward();
+
+	if (isKeyPressed(GLFW_KEY_UP))
+		moveUp();
+	if (isKeyPressed(GLFW_KEY_DOWN))
+		moveDown();
+	
 	if (isKeyPressed(GLFW_KEY_Q))
 		incrementVelocity();
 	if (isKeyPressed(GLFW_KEY_R))
@@ -50,6 +56,16 @@ void Animation::moveRight()
 void Animation::moveLeft()
 {
 	renderer_.moveCameraLeft();
+}
+
+void Animation::moveUp()
+{
+	renderer_.moveCameraUp();
+}
+
+void Animation::moveDown()
+{
+	renderer_.moveCameraDown();
 }
 
 void Animation::incrementRotationOfTrainWeels()

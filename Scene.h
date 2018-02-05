@@ -33,19 +33,6 @@ public:
 
 	void renderActors();
 
-	
-	/*
-	void setWidth(GLfloat width);
-	GLfloat getWidth()const;
-	void setHeight(GLfloat height);
-	GLfloat getHeight()const;
-
-	void setViewAngle(GLfloat v_angle);
-	GLfloat getViewAngle()const;
-*/
-
-
-
 	virtual ~Scene();
 };
 

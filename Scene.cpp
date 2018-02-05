@@ -35,7 +35,6 @@ void Scene::setActor(const Actor & act)
 
 	actors.push_back(act.clone());
 	actors.back()->setShaderId(shader_id_);
-//	(actors[actors.size - 1])->setShaderId(shader_id_);
 }
 
 std::unique_ptr<Actor>& Scene::getActorReference(int number)
@@ -54,16 +53,26 @@ void Scene::setShaderId(GLuint id)
 
 Scene Scene::getDefaultScene()
 {
-	const std::string TEX_PATH = "..\\Animacja_lokomotywy\\textures\\metal.jpg";
+	const std::string SZYNA_PATH = "..\\Animacja_lokomotywy\\textures\\metal.jpg",
+		SKYBOX_PATH = "..\\Animacja_lokomotywy\\textures\\lake.jpg",
+		FLOOR_PATH =  "..\\Animacja_lokomotywy\\textures\\nowa_trawa.jpg";
 	Scene ret_scene;
 	Train tr;
-	Box szyna_lewa(1, 1, 1000, TEX_PATH), szyna_prawa(1, 1, 100, TEX_PATH);
+	
+	Box szyna_lewa(1, 1, 1000, SZYNA_PATH), szyna_prawa(1, 1, -1000, SZYNA_PATH);
 	szyna_lewa.setDefaultTranslation({ 3, -5, 0 });
 	szyna_prawa.setDefaultTranslation({ -3, -5, 0 });
+	
+	Box skybox(400,400, 400, SKYBOX_PATH );
+	skybox.setDefaultTranslation({0, -5.5,0});
+	Rectangle floor(400, 400, 0, FLOOR_PATH);
+	floor.setDefaultTranslation({0, -5.5, 0});
 	
 	ret_scene.setActor(tr);
 	ret_scene.setActor(szyna_lewa);
 	ret_scene.setActor(szyna_prawa);
+	ret_scene.setActor(skybox);
+	ret_scene.setActor(floor);
 	return ret_scene;
 	
 }

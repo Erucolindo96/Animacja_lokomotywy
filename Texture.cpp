@@ -47,7 +47,7 @@ void Texture::createTextureBuffer()
 	glGenTextures(1,&tex_buf );
 	tex_buffer_id_ = tex_buf;
 	glBindTexture(GL_TEXTURE_2D, tex_buffer_id_);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
+	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
